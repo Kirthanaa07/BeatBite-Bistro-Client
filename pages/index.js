@@ -1,5 +1,4 @@
 import { Button } from 'react-bootstrap';
-import { signOut } from '../utils/auth';
 import { useAuth } from '../utils/context/authContext';
 
 function Home() {
@@ -14,10 +13,15 @@ function Home() {
         margin: '0 auto',
       }}
     >
-      <h1>Hello {user.fbUser.displayName}! </h1>
-      <p>Click the button below to logout!</p>
-      <Button variant="danger" type="button" size="lg" className="copy-btn" onClick={signOut}>
-        Sign Out
+      <h1>Welcome! {user.fbUser.displayName}! </h1>
+      <Button variant="success" type="button" size="sm" className="copy-btn">
+        View Orders
+      </Button>
+      <Button variant="success" type="button" size="sm" className="copy-btn">
+        Create an Order
+      </Button>
+      <Button variant="info" type="button" size="sm" className="copy-btn">
+        View Revenue
       </Button>
     </div>
   );

@@ -12,6 +12,14 @@ function RegisterForm({ user, updateUser }) {
     role: '',
   });
 
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prevState) => ({
+  //     ...prevState,
+  //     [name]: value,
+  //   }));
+  // };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     registerUser(formData).then(() => updateUser(user.uid));
@@ -19,17 +27,17 @@ function RegisterForm({ user, updateUser }) {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Group className="mb-3" controlId="formName">
+      <Form.Group className="mb-3">
         <Form.Label>Name</Form.Label>
         <Form.Control as="textarea" name="name" required placeholder="Enter your full name" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formImage">
         <Form.Label>Image</Form.Label>
-        <Form.Control as="textarea" name="image" required placeholder="Enter your image link" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.image]: target.value }))} />
+        <Form.Control as="textarea" name="image" required placeholder="Enter your image link" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formRole">
         <Form.Label>Role</Form.Label>
-        <Form.Control as="textarea" name="role" required placeholder="Enter your role" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.role]: target.value }))} />
+        <Form.Control as="textarea" name="role" required placeholder="Enter your role" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
       </Form.Group>
       <Button variant="primary" type="submit">
         Submit
