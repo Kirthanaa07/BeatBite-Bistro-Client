@@ -17,7 +17,7 @@ function Home() {
       <Button variant="success" type="button" size="sm" className="copy-btn">
         View Orders
       </Button>
-      <Button variant="success" type="button" size="sm" className="copy-btn">
+      <Button variant="primary" type="button" size="sm" className="copy-btn">
         Create an Order
       </Button>
       <Button variant="info" type="button" size="sm" className="copy-btn">
