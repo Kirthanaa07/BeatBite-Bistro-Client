@@ -13,7 +13,7 @@ function SingleOrder() {
   }, [id]);
 
   return (
-    <article className="single-game">
+    <article className="single-order">
       <h1>Order</h1>
       <p>Name: {singleOrder.name}</p>
       <p>Order_type {singleOrder.order_type}</p>

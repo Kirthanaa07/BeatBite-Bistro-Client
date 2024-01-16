@@ -15,7 +15,7 @@ const UpdateOrder = () => {
   return (
     <div>
       <h2>Update Game</h2>
-      <OrderForm gameObj={editOrder} />
+      <OrderForm orderObj={editOrder} />
     </div>
   );
 };

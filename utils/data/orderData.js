@@ -31,13 +31,13 @@ const createOrder = (order) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const updateOrder = (payload) => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/orders/${payload.id}`, {
+const updateOrder = (order) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/orders/${order.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(order),
   })
     .then(resolve)
     .catch(reject);
@@ -47,20 +47,15 @@ const deleteOrder = (id) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/orders/${id}`, {
     method: 'DELETE',
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      resolve();
-    })
+    .then(resolve)
     .catch(reject);
 });
 
 const getOrderTypes = () => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/ordertypes`, {
+  fetch(`${clientCredentials.databaseURL}/orders`, {
     method: 'GET',
     headers: {
-      'content-Type': 'application/json',
+      'Content-Type': 'application/json',
     },
   })
     .then((response) => response.json())
