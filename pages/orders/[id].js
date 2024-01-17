@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { getSingleOrder } from '../../utils/data/orderData';
 import { Button } from 'react-bootstrap';
+import { getSingleOrder } from '../../utils/data/orderData';
 
 function SingleOrder() {
   const [singleOrderDetails, setSingleOrderDetails] = useState({ items: [] });
