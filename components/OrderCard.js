@@ -1,15 +1,25 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useRouter } from 'next/router';
 import { Card, Button } from 'react-bootstrap';
-import Link from 'next/link';
 import { deleteOrder } from '../utils/data/orderData';
 
 export default function OrderCard({ orderObj, onUpdate }) {
+  const router = useRouter();
   const deleteThisOrder = () => {
     if (window.confirm('Delete this order?')) {
       deleteOrder(orderObj.id).then(() => onUpdate());
     }
   };
+
+  function orderDetail(id) {
+    router.push(`/orders/${id}`);
+  }
+
+  function editOrder(id) {
+    router.push(`/orders/edit/${id}`);
+  }
+
   return (
     <Card className="text-center">
       <Card.Header>{orderObj.customer.name}</Card.Header>
@@ -19,14 +29,12 @@ export default function OrderCard({ orderObj, onUpdate }) {
         <Card.Text>{orderObj.order_date}</Card.Text>
       </Card.Body>
       <Card.Footer className="text-muted">
-        <Button variant="primary" type="info">
+        <Button variant="primary" onClick={() => orderDetail(orderObj.id)} type="info">
           Info
         </Button>
-        <Link href={`/orders/edit/${orderObj.id}`} passHref>
-          <Button variant="success" type="edit">
-            Edit
-          </Button>
-        </Link>
+        <Button variant="success" type="edit" onClick={() => editOrder(orderObj.id)}>
+          Edit
+        </Button>
         <Button variant="danger" type="delete" onClick={deleteThisOrder}>
           Delete
         </Button>
@@ -43,7 +51,7 @@ OrderCard.propTypes = {
     customer: PropTypes.shape({
       name: PropTypes.string.isRequired,
       email: PropTypes.string,
-      phone_number: PropTypes.number,
+      phone_number: PropTypes.string,
     }),
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,

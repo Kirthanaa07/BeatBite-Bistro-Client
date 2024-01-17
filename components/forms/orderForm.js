@@ -128,7 +128,7 @@ OrderForm.propTypes = {
       id: PropTypes.number,
       name: PropTypes.string,
       email: PropTypes.string,
-      phone_number: PropTypes.number,
+      phone_number: PropTypes.string,
     }),
     user: PropTypes.shape({
       id: PropTypes.number,
