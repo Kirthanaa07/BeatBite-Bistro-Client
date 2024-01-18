@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Col } from 'react-bootstrap';
 import { useAuth } from '../../utils/context/authContext';
 import { createOrder, updateOrder } from '../../utils/data/orderData';
+import { getItems } from '../../utils/data/itemData';
 
 const initialState = {
   user_id: 0,
@@ -18,13 +19,15 @@ const initialState = {
 };
 
 const OrderForm = ({ existingOrder }) => {
-  // const [orderType, setOrderType] = useState([]);
   const [formOrderData, setFormOrderData] = useState(initialState);
+  const [dbItems, setItems] = useState([]);
+  const [itemCounts, setItemCounts] = useState([]);
+  const [countChanged, setCountChanged] = useState(0);
   const router = useRouter();
   const { user } = useAuth();
 
   useEffect(() => {
-    // getOrderTypes().then(setOrderType);
+    getItems().then((data) => setItems(data));
     if (existingOrder.id) {
       setFormOrderData({
         id: existingOrder.id,
@@ -38,6 +41,11 @@ const OrderForm = ({ existingOrder }) => {
         tip_amount: existingOrder.tip_amount,
         status: existingOrder.status,
       });
+      const counts = existingOrder.items.map((orderItem) => ({
+        id: orderItem.item.id,
+        quantity: orderItem.quantity,
+      }));
+      setItemCounts(counts);
     }
   }, [existingOrder, user]);
 
@@ -82,23 +90,60 @@ const OrderForm = ({ existingOrder }) => {
     }
   };
 
+  function incrementCount(itemId) {
+    const itemCount = itemCounts.find((ic) => ic.id === itemId);
+    if (itemCount) {
+      itemCount.quantity += 1;
+    } else {
+      itemCounts.push({
+        id: itemId,
+        quantity: 1,
+      });
+    }
+    setItemCounts(itemCounts);
+    setCountChanged(countChanged + 1);
+  }
+
+  function decrementCount(itemId) {
+    const itemCount = itemCounts.find((ic) => ic.id === itemId);
+    if (itemCount && itemCount.quantity > 1) {
+      itemCount.quantity -= 1;
+    } else if (itemCount && itemCount.quantity === 1) {
+      const index = itemCounts.findIndex((c) => c.id === itemId);
+      itemCounts.splice(index, 1);
+    }
+    setItemCounts(itemCounts);
+    setCountChanged(countChanged - 1);
+  }
+
+  function getCount(itemId) {
+    const itemCount = itemCounts.find((ic) => ic.id === itemId);
+    let q;
+    if (itemCount) {
+      q = itemCount.quantity;
+    } else {
+      q = 0;
+    }
+    return q;
+  }
+
   return (
     <>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
-          <Form.Label>Enter Customer Name</Form.Label>
+          <Form.Label>Name</Form.Label>
           <Form.Control name="customer_name" required value={formOrderData.customer_name} onChange={handleChange} />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Customer Email</Form.Label>
+          <Form.Label>Email</Form.Label>
           <Form.Control name="customer_email" required value={formOrderData.customer_email} onChange={handleChange} />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Enter Phone-number</Form.Label>
+          <Form.Label>Phone number</Form.Label>
           <Form.Control name="customer_phone" required value={formOrderData.customer_phone} onChange={handleChange} />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>order Type</Form.Label>
+          <Form.Label>Order Type</Form.Label>
           <Form.Select
             name="order_type"
             required
@@ -110,7 +155,20 @@ const OrderForm = ({ existingOrder }) => {
             <option value="Walk-in">Walk-in</option>
           </Form.Select>
         </Form.Group>
-        <Button variant="primary" type="submit"> {existingOrder.id ? 'Update' : 'Create'} Order </Button>
+        <Form.Group>
+          <Form.Label>Items</Form.Label>
+          {dbItems.map((item) => (
+            <div key={item.id} className="d-flex flex-row mt-2 align-items-center gap-4">
+              <div className="d-flex flex-row align-items-center gap-2">
+                <Button onClick={() => decrementCount(item.id)}>-</Button>
+                <span>{getCount(item.id)}</span>
+                <Button onClick={() => incrementCount(item.id)}>+</Button>
+              </div>
+              <div>{item.name}</div>
+            </div>
+          ))}
+        </Form.Group>
+        <Button className="mt-5 mb-5" variant="primary" type="submit"> {existingOrder.id ? 'Update' : 'Create'} Order </Button>
       </Form>
     </>
   );
@@ -133,6 +191,15 @@ OrderForm.propTypes = {
     user: PropTypes.shape({
       id: PropTypes.number,
     }),
+    items: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number,
+      item: PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+        price: PropTypes.number,
+      }),
+      quantity: PropTypes.number,
+    })),
   }),
 };
 

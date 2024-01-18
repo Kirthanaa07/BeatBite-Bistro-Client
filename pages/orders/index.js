@@ -19,20 +19,22 @@ function Home() {
   }, []);
 
   return (
-    <article className="orders">
-      <h1>Orders</h1>
-      <Button
-        onClick={() => {
-          router.push('/orders/new');
-        }}
-      >
-        Create New Order
-      </Button>
-      {orders.map((order) => (
-        <section key={`order--${order.id}`} className="order">
-          <OrderCard orderObj={order} onUpdate={getAllOrders} />
-        </section>
-      ))}
+    <article className="orders p-3">
+      <div className="d-flex flex-row justify-content-between">
+        <h1>Orders</h1>
+        <Button
+          onClick={() => {
+            router.push('/orders/new');
+          }}
+        >
+          Create New Order
+        </Button>
+      </div>
+      <div className="d-flex flex-row justify-content-start gap-2 flex-wrap">
+        {orders.map((order) => (
+          <OrderCard key={`order--${order.id}`} orderObj={order} onUpdate={getAllOrders} />
+        ))}
+      </div>
     </article>
   );
 }

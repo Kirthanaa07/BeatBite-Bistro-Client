@@ -21,14 +21,14 @@ export default function OrderCard({ orderObj, onUpdate }) {
   }
 
   return (
-    <Card className="text-center">
+    <Card style={{ width: '18rem' }} className="text-center">
       <Card.Header>{orderObj.customer.name}</Card.Header>
       <Card.Body><Card.Text>{orderObj.customer.email}</Card.Text>
         <Card.Text>{orderObj.customer.phone_number}</Card.Text>
         <Card.Text>{orderObj.order_type}</Card.Text>
         <Card.Text>{orderObj.order_date}</Card.Text>
       </Card.Body>
-      <Card.Footer className="text-muted">
+      <Card.Footer className="text-muted d-flex flex-row justify-content-between">
         <Button variant="primary" onClick={() => orderDetail(orderObj.id)} type="info">
           Info
         </Button>

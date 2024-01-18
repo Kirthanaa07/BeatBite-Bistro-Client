@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import { Button } from 'react-bootstrap';
+import { useRouter } from 'next/router';
 import { getSingleOrder } from '../../utils/data/orderData';
 
 function SingleOrder() {
-  const [singleOrderDetails, setSingleOrderDetails] = useState({ items: [] });
+  const [singleOrderDetails, setSingleOrderDetails] = useState({
+    items: [],
+    customer: {},
+  });
   const router = useRouter();
 
   const { id } = router.query;
@@ -16,21 +19,23 @@ function SingleOrder() {
   }, []);
 
   return (
-    <article className="items">
-      <h1>Order {singleOrderDetails.id}</h1>
+    <article className="items p-3">
+      <h1>Order for {singleOrderDetails.customer.name} - ID: {singleOrderDetails.id}</h1>
       {singleOrderDetails.items && singleOrderDetails.items.length > 0 ? singleOrderDetails.items.map((orderitem) => (
-        <div key={orderitem.id}>
-          <div>Name: {orderitem.item.name}</div>
-          <div>Price: {orderitem.item.price}</div>
-          <div>Quantity: {orderitem.quantity}</div>
+        <div key={orderitem.id} className="d-flex justify-content-start gap-3">
+          <span>{orderitem.item.name}</span>
+          <span>${orderitem.item.price}</span>
+          <span>X {orderitem.quantity}</span>
         </div>
       )) : <div>No Items</div>}
-      <Button>
-        Edit
-      </Button>
-      <Button>
-        Delete
-      </Button>
+      <div className="d-flex flex-row justify-content-start gap-3 mt-3">
+        <Button>
+          Edit
+        </Button>
+        <Button>
+          Delete
+        </Button>
+      </div>
     </article>
   );
 }

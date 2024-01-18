@@ -20,3 +20,7 @@ a {
 body {
   background-color: #88effd;
 }
+
+.w-35 {
+  width: 35%;
+}

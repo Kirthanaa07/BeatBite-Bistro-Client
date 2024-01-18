@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { getSingleOrder } from '../../../utils/data/orderData';
-import OrderForm from '../../../components/forms/orderForm';
+import SingleOrder from '../../orders/[id]';
 
 const UpdateOrder = () => {
   const router = useRouter();
-  const { orderId } = router.query;
+  const { itemId } = router.query;
   const [editOrder, setEditOrder] = useState({});
 
   useEffect(() => {
-    getSingleOrder(orderId).then(setEditOrder);
-  }, [orderId]);
+    getSingleOrder(itemId).then(setEditOrder);
+  }, [itemId]);
 
   return (
     <div>
-      <h2>Update Order</h2>
-      <OrderForm existingOrder={editOrder} />
+      <h2>Update Item</h2>
+      <SingleOrder orderObj={editOrder} />
     </div>
   );
 };
