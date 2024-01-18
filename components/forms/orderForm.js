@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import { Button, Form, Col } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { useAuth } from '../../utils/context/authContext';
 import { createOrder, updateOrder } from '../../utils/data/orderData';
 import { getItems } from '../../utils/data/itemData';
