@@ -2,13 +2,23 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { registerUser } from '../utils/auth'; // Update with path to registerUser
+import { registerUser } from '../utils/auth';
 
 function RegisterForm({ user, updateUser }) {
   const [formData, setFormData] = useState({
-    bio: '',
+    name: '',
     uid: user.uid,
+    image: '',
+    role: '',
   });
+
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prevState) => ({
+  //     ...prevState,
+  //     [name]: value,
+  //   }));
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,10 +27,17 @@ function RegisterForm({ user, updateUser }) {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Gamer Bio</Form.Label>
-        <Form.Control as="textarea" name="bio" required placeholder="Enter your Bio" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
-        <Form.Text className="text-muted">Let other gamers know a little bit about you...</Form.Text>
+      <Form.Group className="mb-3">
+        <Form.Label>Name</Form.Label>
+        <Form.Control as="textarea" name="name" required placeholder="Enter your full name" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formImage">
+        <Form.Label>Image</Form.Label>
+        <Form.Control as="textarea" name="image" required placeholder="Enter your image link" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formRole">
+        <Form.Label>Role</Form.Label>
+        <Form.Control as="textarea" name="role" required placeholder="Enter your role" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
       </Form.Group>
       <Button variant="primary" type="submit">
         Submit
