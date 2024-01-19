@@ -14,8 +14,6 @@ const initialState = {
   order_type: '',
   order_date: '',
   status: 'Open',
-  tip_amount: 0,
-  payment_type: '',
 };
 
 const OrderForm = ({ existingOrder }) => {
@@ -23,6 +21,7 @@ const OrderForm = ({ existingOrder }) => {
   const [dbItems, setItems] = useState([]);
   const [itemCounts, setItemCounts] = useState([]);
   const [countChanged, setCountChanged] = useState(0);
+  const status = 'Open';
   const router = useRouter();
   const { user } = useAuth();
 
@@ -37,9 +36,6 @@ const OrderForm = ({ existingOrder }) => {
         customer_phone: existingOrder.customer.phone_number,
         order_type: existingOrder.order_type,
         order_date: existingOrder.order_date,
-        payment_type: existingOrder.payment_type,
-        tip_amount: existingOrder.tip_amount,
-        status: existingOrder.status,
       });
       const counts = existingOrder.items.map((orderItem) => ({
         id: orderItem.item.id,
@@ -70,6 +66,7 @@ const OrderForm = ({ existingOrder }) => {
         customer_phone: formOrderData.customer_phone,
         order_type: formOrderData.order_type,
         order_date: formOrderData.order_date,
+        items: itemCounts,
       };
       updateOrder(update).then(() => router.push('/orders'));
     } else {
@@ -80,9 +77,8 @@ const OrderForm = ({ existingOrder }) => {
         customer_phone: formOrderData.customer_phone,
         order_type: formOrderData.order_type,
         order_date: new Date(),
-        payment_type: '',
-        status: 'Open',
-        tip_amount: 0,
+        status,
+        items: itemCounts,
       };
 
       // Send POST request to your API
@@ -115,7 +111,8 @@ const OrderForm = ({ existingOrder }) => {
     setItemCounts(itemCounts);
     setCountChanged(countChanged - 1);
   }
-
+  // https://blog.logrocket.com/how-when-to-force-react-component-re-render/
+  // https://codesandbox.io/p/sandbox/plus-minus-button-dzxtt?file=%2Fsrc%2FApp.js%3A10%2C4
   function getCount(itemId) {
     const itemCount = itemCounts.find((ic) => ic.id === itemId);
     let q;
@@ -164,7 +161,7 @@ const OrderForm = ({ existingOrder }) => {
                 <span>{getCount(item.id)}</span>
                 <Button onClick={() => incrementCount(item.id)}>+</Button>
               </div>
-              <div>{item.name}</div>
+              <div>{item.name} - ${item.price}</div>
             </div>
           ))}
         </Form.Group>

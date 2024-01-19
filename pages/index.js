@@ -25,7 +25,7 @@ function Home() {
           Create an Order
         </Button>
       </Link>
-      <Link passHref href="/">
+      <Link passHref href="/orders/revenue">
         <Button variant="info" type="button" size="sm" className="copy-btn">
           View Revenue
         </Button>

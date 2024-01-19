@@ -27,8 +27,8 @@ export default function NavBar() {
               <Link passHref href="/orders/new">
                 <Nav.Link>Create an Order</Nav.Link>
               </Link>
-              <Link passHref href="/">
-                <Nav.Link>Revenue Graph</Nav.Link>
+              <Link passHref href="/orders/revenue">
+                <Nav.Link>Revenue</Nav.Link>
               </Link>
             </div>
             <Button variant="danger" onClick={signOut}>

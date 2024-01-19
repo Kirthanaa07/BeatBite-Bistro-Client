@@ -18,9 +18,13 @@ a {
 }
 
 body {
-  background-color: #88effd;
+  background-color: #c55050;
 }
 
 .w-35 {
   width: 35%;
+}
+
+.card-color{
+  background-color: rgb(226, 226, 91);
 }

@@ -1,38 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { Button } from 'react-bootstrap';
-import OrderCard from '../../components/OrderCard';
-import { getOrders } from '../../utils/data/orderData';
+import OpenOrderCard from '../../components/OpenOrderCard';
+import { getOpenOrders } from '../../utils/data/orderData';
 import { useAuth } from '../../utils/context/authContext';
 
 function Home() {
   const [orders, setOrders] = useState([]);
-  const router = useRouter();
   const { user } = useAuth();
 
-  const getAllOrders = () => {
-    getOrders(user.uid).then((data) => setOrders(data));
+  const getAllOpenOrders = () => {
+    getOpenOrders(user.uid).then((data) => setOrders(data));
   };
 
   useEffect(() => {
-    getAllOrders();
+    getAllOpenOrders();
   }, []);
 
   return (
     <article className="orders p-3">
-      <div className="d-flex flex-row justify-content-between">
-        <h1>Orders</h1>
-        <Button
-          onClick={() => {
-            router.push('/orders/new');
-          }}
-        >
-          Create New Order
-        </Button>
-      </div>
+      <h1>Open Orders</h1>
       <div className="d-flex flex-row justify-content-start gap-2 flex-wrap">
         {orders.map((order) => (
-          <OrderCard key={`order--${order.id}`} orderObj={order} onUpdate={getAllOrders} />
+          <OpenOrderCard key={`order--${order.id}`} orderObj={order} onUpdate={getAllOpenOrders} />
         ))}
       </div>
     </article>

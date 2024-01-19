@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { Card, Button } from 'react-bootstrap';
 import { deleteOrder } from '../utils/data/orderData';
 
-export default function OrderCard({ orderObj, onUpdate }) {
+export default function OpenOrderCard({ orderObj, onUpdate }) {
   const router = useRouter();
   const deleteThisOrder = () => {
     if (window.confirm('Delete this order?')) {
@@ -21,8 +21,13 @@ export default function OrderCard({ orderObj, onUpdate }) {
   }
 
   return (
-    <Card style={{ width: '18rem' }} className="text-center">
-      <Card.Header>{orderObj.customer.name}</Card.Header>
+    <Card style={{ width: '18rem' }} className="card-color">
+      <Card.Header>
+        <div className="d-flex justify-content-between">
+          <span>{orderObj.customer.name}</span>
+          <span>{orderObj.status}</span>
+        </div>
+      </Card.Header>
       <Card.Body><Card.Text>{orderObj.customer.email}</Card.Text>
         <Card.Text>{orderObj.customer.phone_number}</Card.Text>
         <Card.Text>{orderObj.order_type}</Card.Text>
@@ -32,21 +37,27 @@ export default function OrderCard({ orderObj, onUpdate }) {
         <Button variant="primary" onClick={() => orderDetail(orderObj.id)} type="info">
           Info
         </Button>
-        <Button variant="success" type="edit" onClick={() => editOrder(orderObj.id)}>
-          Edit
-        </Button>
-        <Button variant="danger" type="delete" onClick={deleteThisOrder}>
-          Delete
-        </Button>
+        {orderObj.status === 'Open' ? (
+          <>
+            <Button variant="success" type="edit" onClick={() => editOrder(orderObj.id)}>
+              Edit
+            </Button>
+            <Button variant="danger" type="delete" onClick={deleteThisOrder}>
+              Delete
+            </Button>
+          </>
+        ) : <></>}
+
       </Card.Footer>
     </Card>
   );
 }
 
-OrderCard.propTypes = {
+OpenOrderCard.propTypes = {
   orderObj: PropTypes.shape({
     id: PropTypes.number.isRequired,
     order_type: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
     order_date: PropTypes.string.isRequired,
     customer: PropTypes.shape({
       name: PropTypes.string.isRequired,
